@@ -176,28 +176,30 @@ class svdocsModel extends module
 /**
  * @brief 
  */
-	public function getDocsCount( $nModuleSrl )
+	public function getDocsCount($nModuleSrl)
 	{
-		$args->module_srl = $nModuleSrl;
-		$output = executeQuery('svdocs.getDocsCount', $args );
-
-		if( !$output->toBool() )
+		$oArgs = new stdClass();
+		$oArgs->module_srl = $nModuleSrl;
+		$oRst = executeQuery('svdocs.getDocsCount', $oArgs);
+		unset($oArgs);
+		if(!$oRst->toBool())
 			return new BaseObject(-1, 'msg_error_svdocs_db_query');
 		else
-			return $output->total_count;
+			return $oRst->total_count;
 	}
 /**
  * @brief 
  */
 	public function getDocList( $nModuleSrl )
 	{
-		$args->module_srl = $nModuleSrl;
-		$output = executeQueryArray('svdocs.getApplicantList', $args);
-
-		if( !$output->toBool() )
+		$oArgs = new stdClass();
+		$oArgs->module_srl = $nModuleSrl;
+		$oRst = executeQueryArray('svdocs.getApplicantList', $oArgs);
+		unset($oArgs);
+		if(!$oRst->toBool())
 			return new BaseObject(-1, 'msg_error_svdocs_db_query');
 		else
-			return $output;
+			return $oRst;
 	}
 /**
  * Common:: Module extensions of variable management
@@ -286,11 +288,11 @@ class svdocsModel extends module
 
 				if($isFixed)
 					$output = executeQueryArray('document.getDocumentExtraKeys', $obj);
-
 				$oExtraVar->setExtraVarKeys($output->data);
 				$keys = $oExtraVar->getExtraVars();
+
 				if(!$keys)
-					$keys = array();
+					$keys = [];
 
 				if($oCacheHandler->isSupport())
 					$oCacheHandler->put($cache_key, $keys);

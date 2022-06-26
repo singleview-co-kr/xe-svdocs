@@ -1,10 +1,9 @@
 <include target="header.html" />
 
 <form class="x_form-horizontal" action="./" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="module" value="svpromotion" />
+	<input type="hidden" name="module" value="{$module}" />
 	<input type="hidden" name="act" value="procSvdocsAdminInsertApplicant" />
 	<input type="hidden" name="module_srl" value="{$module_srl}" />
-	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
 	<section class="section">
 		<div class="x_control-group">
 			<label class="x_control-label" for="lang_header_text">{$lang->applicants_registration}</label>

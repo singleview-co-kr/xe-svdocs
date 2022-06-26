@@ -295,20 +295,22 @@ class svdocsAdminController extends svdocs
 			return new BaseObject( -1, 'msg_invalid_applicant_list' );
 		
 		$oSvdocsModel = &getModel('svdocs');
+
 		$oDocInfo = $oSvdocsModel->getDocInfo( $nModuleSrl );
 		$oDB = DB::getInstance();
-
-		foreach( $aApplicantList as $key => $val )
+		$oArgs = new stdClass();
+		foreach($aApplicantList as $key => $val)
 		{
 			$aApplicantInfo = preg_split('/,/', $val);
-			
-			$args->module_srl = $nModuleSrl;
-			$args->member_srl = (int)$aApplicantInfo[0];
-			$args->applicant_name = trim($aApplicantInfo[1]);
-			$args->applicant_phone = preg_replace('/\n|\r\n?/', '', $aApplicantInfo[2]);
-			$output = executeQuery('svdocs.insertSvdocs', $args);
+			$oArgs->module_srl = $nModuleSrl;
+			$oArgs->member_srl = (int)$aApplicantInfo[0];
+			$oArgs->applicant_name = trim($aApplicantInfo[1]);
+			$oArgs->applicant_phone = preg_replace('/\n|\r\n?/', '', $aApplicantInfo[2]);
+			executeQuery('svdocs.insertSvdocs', $oArgs);
 		}
-		$this->add('cleee', 'dsddsf');
+		unset($oArgs);
+		$returnUrl = getNotEncodedUrl('', 'module', 'admin', 'module_srl', $nModuleSrl, 'act', 'dispSvdocsAdminApplicantsList');
+		$this->setRedirectUrl($returnUrl);
 	}
 /**
  * @brief add module

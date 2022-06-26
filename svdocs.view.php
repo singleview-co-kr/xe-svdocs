@@ -75,7 +75,7 @@ class svdocsView extends svdocs
 		Context::set('config', $oDefaultConfig);
 		$output = $oSvdocsModel->getDocList($this->module_srl);
 		Context::set('applicant_list', $output->data);
-		Context::set('kakao_link', "http://".$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]);
+		Context::set('kakao_link', "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	
 		$this->setTemplateFile('add');
 	}

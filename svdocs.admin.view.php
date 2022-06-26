@@ -67,13 +67,15 @@ class svdocsAdminView extends svdocs
  **/
 	public function dispSvdocsAdminApplicantsList() 
 	{
-		$args->module_srl = Context::get('module_srl');
-		$args->page = Context::get('page');
+		$oArgs = new stdClass();
+		$oArgs->module_srl = Context::get('module_srl');
+		$oArgs->page = Context::get('page');
 		$search_target_list = array('s_applicant_name');
 		$search_target = Context::get('search_target');
 		$search_keyword = Context::get('search_keyword');
-		if(in_array($search_target,$search_target_list) && $search_keyword) $args->{$search_target} = $search_keyword;
-		$output = executeQueryArray('svdocs.getAdminSvdocsByModule', $args);
+		if(in_array($search_target,$search_target_list) && $search_keyword) $oArgs->{$search_target} = $search_keyword;
+		$output = executeQueryArray('svdocs.getAdminSvdocsByModule', $oArgs);
+		unset($oArgs);
 		
 		$oMemberModel = &getModel('member');
 		$columnList = array('member_srl', 'user_id', 'email_address', 'user_name', 'nick_name', 'regdate');
@@ -121,10 +123,12 @@ class svdocsAdminView extends svdocs
 		$nDocSrl = Context::get('doc_srl');
 		if(!$nDocSrl) 
 			return new BaseObject(-1, 'msg_invalid_doc_srl');
-		
-		$args->module_srl = $nModuleSrl;
-		$args->doc_srl = $nDocSrl;
-		$output = executeQuery('svdocs.getSvdocsAdminDocDetail', $args);
+
+		$oArgs = new stdClass();
+		$oArgs->module_srl = $nModuleSrl;
+		$oArgs->doc_srl = $nDocSrl;
+		$output = executeQuery('svdocs.getSvdocsAdminDocDetail', $oArgs);
+		unset($oArgs);
 		
 		$oMemberModel = &getModel('member');
 		$member_info = $oMemberModel->getMemberInfoByMemberSrl($output->data->member_srl, 0, $columnList);
@@ -143,19 +147,19 @@ class svdocsAdminView extends svdocs
  **/
 	public function dispSvdocsAdminIndex() 
 	{
-		$args = new stdClass();
-		$args->sort_index = "module_srl";
-		$args->page = Context::get('page');
-		$args->list_count = 40;
-		$args->page_count = 10;
-		$args->s_module_category_srl = Context::get('module_category_srl');
+		$oArgs = new stdClass();
+		$oArgs->sort_index = "module_srl";
+		$oArgs->page = Context::get('page');
+		$oArgs->list_count = 40;
+		$oArgs->page_count = 10;
+		$oArgs->s_module_category_srl = Context::get('module_category_srl');
 
 		$search_target_list = array('s_mid','s_browser_title');
 		$search_target = Context::get('search_target');
 		$search_keyword = Context::get('search_keyword');
-		if(in_array($search_target,$search_target_list) && $search_keyword) $args->{$search_target} = $search_keyword;
-
-		$output = executeQuery('svdocs.getSvdocsModuleList', $args);
+		if(in_array($search_target,$search_target_list) && $search_keyword) $oArgs->{$search_target} = $search_keyword;
+		$output = executeQuery('svdocs.getSvdocsModuleList', $oArgs);
+		unset($oArgs);
 
 		$oModuleModel = getModel('module');
 		$page_list = $oModuleModel->addModuleExtraVars($output->data);
@@ -238,6 +242,7 @@ class svdocsAdminView extends svdocs
 				case 'phone':
 					if( $val->is_required == 'Y' )
 					{
+						$aEextraKey[$nIdx] = new stdClass();
 						$aEextraKey[$nIdx]->name = $val->name;
 						$aEextraKey[$nIdx++]->eid = $val->eid;
 					}
@@ -246,9 +251,14 @@ class svdocsAdminView extends svdocs
 		}
 		if( $module_info->svauth_plugin_srl )
 		{
+			if(is_null($aEextraKey[$nIdx]))
+				$aEextraKey[$nIdx] = new stdClass();
 			$aEextraKey[$nIdx]->name = '핸드폰번호';
 			$aEextraKey[$nIdx++]->eid = 'applicant_phone';
 		}
+		if(is_null($aEextraKey[$nIdx]))
+			$aEextraKey[$nIdx] = new stdClass();
+
 		$aEextraKey[$nIdx]->name = '회원번호';
 		$aEextraKey[$nIdx++]->eid = 'member_srl';
 		Context::set('extra_keys', $aEextraKey);

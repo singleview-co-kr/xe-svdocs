@@ -26,7 +26,7 @@ class SvdocsExtraVar
 	 * @param int $module_srl Sequence of module
 	 * @return SvdocsExtraVar
 	 */
-	function &getInstance($module_srl)
+	static function &getInstance($module_srl)
 	{
 		return new SvdocsExtraVar($module_srl);
 	}
@@ -37,7 +37,7 @@ class SvdocsExtraVar
 	 * @param int $module_srl Sequence of module
 	 * @return void
 	 */
-	function SvdocsExtraVar($module_srl)
+	function __construct($module_srl)
 	{
 		$this->module_srl = $module_srl;
 	}
@@ -152,7 +152,7 @@ class SvdocsExtraItem
 	 * @param string $eid Unique id of extra variable in module
 	 * @return void
 	 */
-	function SvdocsExtraItem($module_srl, $idx, $name, $type = 'text', $default = null, $desc = '', $is_required = 'N', $search = 'N', $value = null, $eid = '')
+	function __construct($module_srl, $idx, $name, $type = 'text', $default = null, $desc = '', $is_required = 'N', $search = 'N', $value = null, $eid = '')
 	{
 		if(!$idx)
 		{

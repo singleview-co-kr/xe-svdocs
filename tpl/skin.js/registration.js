@@ -290,7 +290,6 @@ function doCertified( sVirtualConversionPrefix )
 			{
 				jQuery('#layer_finish').fadeOut(); // 신청양식 숨기기
 				setTimeout("layer_open('layer_thankyou')", 500); 
-				ddddd
 			}
 			if( typeof checkNonEcConversionGaectk === 'function' )
 				checkNonEcConversionGaectk( '/'+sVirtualConversionPrefix+'.html', sVirtualConversionPrefix+' page' );

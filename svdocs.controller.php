@@ -398,13 +398,14 @@ debugPrint( $oExtraVars );
 		unset($oSvdocsModel);
 
 		$nOpenTimestamp = strtotime( $oDocInfo->timeOpendatetime);
-		if( time() < $nOpenTimestamp )
-			return new BaseObject(1, sprintf(Context::getLang('msg_svodcs_not_opened_yet'), date('Y-m-d h:i:s', $nOpenTimestamp) )); 
+		if(time() < $nOpenTimestamp)
+			return new BaseObject(1, sprintf(Context::getLang('msg_svodcs_not_opened_yet'), date('Y-m-d h:i:s', $nOpenTimestamp))); 
 
 		// 회원 번호 중복 방지 검사
 		$oLoggedInfo = Context::get('logged_info');
-		if( $oDocInfo->svdocs_unique_field[member_srl] == 'on' && $oLoggedInfo->member_srl )
+		if($oDocInfo->svdocs_unique_field['member_srl'] == 'on' && $oLoggedInfo->member_srl)
 		{
+			$oArgs = new stdClass();
 			$oArgs->member_srl = $oLoggedInfo->member_srl;
 			$oArgs->module_srl = $nModuleSrl;
 			$oRst = executeQueryArray('svdocs.getDocByMemberSrl', $oArgs);
@@ -418,10 +419,10 @@ debugPrint( $oExtraVars );
 
 		if( $oDocInfo->nRemainingApplicants == 0 )
 			return new BaseObject( -1, 'msg_application_closed');
-
-		if( $oLoggedInfo )
+		
+		$oArgs = new stdClass();
+		if($oLoggedInfo)
 			$oArgs->member_srl = $oLoggedInfo->member_srl;
-
 		$oArgs->module_srl = Context::get('module_srl');
 		$oArgs->datetimestamp_entry = Context::get('timestamp_entry');
 		$oArgs->datetimestamp_final = Context::get('timestamp_final');
