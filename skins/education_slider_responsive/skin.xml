@@ -26,7 +26,7 @@
 			</var>
 			<var name="auth_session_var_name" type="text">
 				<title xml:lang="ko">열람 완료 확인 세션 변수명</title>
-				<description xml:lang="ko">다른 모듈에서 입력한 세션 변수명이 true임을 확인합니다. 값을 입력하면 입력폼이 표시되지 않습니다.</description>
+				<description xml:lang="ko">입력한 세션 변수명이 true임을 다른 모듈에서 확인합니다. 값을 입력하면 입력폼이 표시되지 않습니다. 생성한 MID 값을 추천합니다.</description>
 			</var>
 			<var name="complete_title" type="text">
 				<title xml:lang="ko">완료화면 제목</title>

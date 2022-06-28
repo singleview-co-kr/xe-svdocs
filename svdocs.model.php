@@ -117,7 +117,7 @@ class svdocsModel extends module
 		return $oDocInfo;
 	}
 /**
- * @brief 
+ * @brief must be alinged with svdocs.admin.model.php::getPrivacyTerm()
  */
 	function getPrivacyTerm($nModuleSrl, $sTermType)
 	{
@@ -134,25 +134,33 @@ class svdocsModel extends module
 		}
 		$agreement_file = _XE_PATH_.'files/svdocs/'.$nModuleSrl.'_'.$sTermType.'_' . Context::get('lang_type') . '.txt';
 		if(is_readable($agreement_file))
-			return FileHandler::readFile($agreement_file);
+			return nl2br(FileHandler::readFile($agreement_file));
 
 		$db_info = Context::getDBInfo();
 		$agreement_file = _XE_PATH_.'files/svdocs/'.$nModuleSrl.'_'.$sTermType.'_' . $db_info->lang_type . '.txt';
 		if(is_readable($agreement_file))
-			return FileHandler::readFile($agreement_file);
+			return nl2br(FileHandler::readFile($agreement_file));
 
 		$lang_selected = Context::loadLangSelected();
 		foreach($lang_selected as $key => $val)
 		{
 			$agreement_file = _XE_PATH_.'files/svdocs/'.$nModuleSrl.'_'.$sTermType.'_' . $key . '.txt';
 			if(is_readable($agreement_file))
-				return FileHandler::readFile($agreement_file);
+				return nl2br(FileHandler::readFile($agreement_file));
 		}
+		// member module의 약관 가져오기
+		$oMemberAdminModel = &getAdminModel('member');
+		if(method_exists($oMemberAdminModel, 'getPrivacyTerm'))  // means core is later than v1.13.2
+		{
+			$sMemberTermType = str_replace('_term', '', $sTermType);
+			return $oMemberAdminModel->getPrivacyTerm($sMemberTermType);
+		}
+		unset($oMemberAdminModel);
 		
 		// 최종 실패할 경우 기본 약관 출력
 		$agreement_file = _XE_PATH_.'modules/svdocs/tpl/'.$sTermType.'_template.txt';
 		if(is_readable($agreement_file))
-			return FileHandler::readFile($agreement_file);
+			return nl2br(FileHandler::readFile($agreement_file));
 
 		return null;
 	}
