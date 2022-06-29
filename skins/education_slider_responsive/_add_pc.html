@@ -1,21 +1,3 @@
-<script>
-jQuery.loadScript = function (url, callback) {
-    jQuery.ajax({
-        url: url,
-        dataType: 'script',
-        success: callback,
-        async: true
-    });
-}
-
-// regarding no layout case
-if(typeof _g_sGaectkVersion == 'undefined') 
-	jQuery.loadScript('https://svapi.co.kr:5018/gaectk.js', function(){
-    //Stuff to do after someScript has loaded
-	console.log(_g_sGaectkVersion);
-});
-</script>
-
 {@
 $module_info->slide_img_urls = explode("\n", $module_info->slide_img_urls);
 }

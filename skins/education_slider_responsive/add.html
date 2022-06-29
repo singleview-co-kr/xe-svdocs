@@ -2,6 +2,38 @@
 <include target="_add_mob.html" cond="Mobile::isMobileCheckByAgent()"/>
 
 <script>
+jQuery.loadScript = function (url, callback) {
+    jQuery.ajax({
+        url: url,
+        dataType: 'script',
+        success: callback,
+        async: true
+    });
+}
+
+// regarding no layout case
+if(typeof _g_sGaectkVersion == 'undefined') 
+	jQuery.loadScript('https://svapi.co.kr:5018/gaectk.js', function(){
+    //Stuff to do after someScript has loaded
+	//console.log(_g_sGaectkVersion);
+});
+
+if(typeof wcs == 'undefined') 
+	jQuery.loadScript('//wcs.naver.net/wcslog.js', function(){
+    //Stuff to do after someScript has loaded
+	//console.log(wcs);
+});
+
+if(typeof fbq == 'undefined') 
+{
+	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+	n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+	n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+	t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+	document,'script','https://connect.facebook.net/en_US/fbevents.js');
+	//console.log(fbq);
+}
+
 <block cond="$teaser_open=='Y'">
 initializeClock('clockdiv', '{$module_info->open_datetime}', {$remaining_applicants});
 </block>
